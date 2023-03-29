@@ -1,35 +1,36 @@
 const User = require('../models/user');
+const ErrorCode = require('../errors');
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   return User.create({ name, about, avatar })
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Error validating user ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
 
 const getUser = (req, res) => {
   User.findById(req.params.id)
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Error validating user ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемый пользователь не найден ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => res.status(200).send(users))
+    .then((users) => res.status(ErrorCode.STATUS_OK).send(users))
     .catch((error) => {
-      res.status(500).send({ message: `Internal server error ${error}` });
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
@@ -40,12 +41,12 @@ const updateProfile = (req, res) => {
     { name, about },
     { new: true },
   )
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Error validating user ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
@@ -57,12 +58,12 @@ const updateAvatar = (req, res) => {
     { avatar },
     { new: true },
   )
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Error validating user ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };

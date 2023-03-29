@@ -1,10 +1,11 @@
 const Card = require('../models/card');
+const ErrorCode = require('../errors');
 
 const getCards = (req, res) => {
   Card.find({})
-    .then((cards) => res.status(200).send(cards))
+    .then((cards) => res.status(ErrorCode.STATUS_OK).send(cards))
     .catch((error) => {
-      res.status(500).send({ message: `Internal server error ${error}` });
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
@@ -12,12 +13,12 @@ const createCard = (req, res) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   return Card.create({ name, link, owner })
-    .then((card) => res.status(201).send(card))
+    .then((card) => res.status(ErrorCode.STATUS_OK).send(card))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(400).send({ message: `Error validating user ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
@@ -26,16 +27,16 @@ const deleteCard = (req, res) => {
   Card.findById(req.params.id)
     .then((card) => {
       if (card !== null) {
-        res.status(200).send(card);
+        res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(400).send({ message: 'Error delete card' });
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
     .catch((error) => {
       if (error.name === 'DeleteError') {
-        res.status(400).send({ message: `Error delete card ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
@@ -48,16 +49,16 @@ const addLike = (req, res) => {
   )
     .then((card) => {
       if (card !== null) {
-        res.status(200).send(card);
+        res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(400).send({ message: 'Error like card' });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       }
     })
     .catch((error) => {
       if (error.name === 'LikeError') {
-        res.status(400).send({ message: `Error like card ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
@@ -70,16 +71,16 @@ const deleteLike = (req, res) => {
   )
     .then((card) => {
       if (card !== null) {
-        res.status(200).send(card);
+        res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(400).send({ message: 'Error like card' });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       }
     })
     .catch((error) => {
       if (error.name === 'LikeError') {
-        res.status(400).send({ message: `Error like card ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
       } else {
-        res.status(500).send({ message: `Internal server error ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
     });
 };
