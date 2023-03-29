@@ -13,8 +13,8 @@
     "mongoose": "^7.0.3"
   },
   "scripts": {
-    "start": "node app.jsx",
-    "dev": "nodemon app.jsx",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint ."
   },
@@ -44,7 +44,7 @@
     "nodemon": "^2.0.22"
   },
   "description": "[![Tests](../../actions/workflows/tests-13-sprint.yml/badge.svg)](../../actions/workflows/tests-13-sprint.yml) [![Tests](../../actions/workflows/tests-14-sprint.yml/badge.svg)](../../actions/workflows/tests-14-sprint.yml)\r # Проект Mesto фронтенд + бэкенд\r Ссылка на проект https://github.com/Julia-Maltseva/express-mesto-gha",
-  "main": "app.jsx",
+  "main": "app.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Julia-Maltseva/express-mesto-gha.git"

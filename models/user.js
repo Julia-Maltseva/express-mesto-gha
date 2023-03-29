@@ -5,18 +5,18 @@ const userSchema = new mongoose.Schema({
     required: true,
     type: String,
     minLength: 2,
-    maxLength: 30
+    maxLength: 30,
   },
   about: {
     required: true,
     type: String,
     minLength: 2,
-    maxLength: 30
+    maxLength: 30,
   },
   avatar: {
     required: true,
-    type: String
-  }
-})
+    type: String,
+  },
+});
 
 module.exports = mongoose.model('user', userSchema);
