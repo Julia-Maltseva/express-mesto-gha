@@ -4,11 +4,7 @@ const ErrorCode = require('../errors');
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
   return User.create({ name, about, avatar })
-    .then((user) => res.status(ErrorCode.STATUS_OK).send({
-      name: user.name,
-      about: user.about,
-      avatar: user.avatar,
-    }))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
