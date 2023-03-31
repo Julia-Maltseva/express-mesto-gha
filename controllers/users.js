@@ -16,10 +16,16 @@ const createUser = (req, res) => {
 
 const getUser = (req, res) => {
   User.findById(req.params.id)
-    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
+    .then((user) => {
+      if (user !== null) {
+        res.status(ErrorCode.STATUS_OK).send(user);
+      } else {
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
+      }
+    })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Запрашиваемый пользователь не найден ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
