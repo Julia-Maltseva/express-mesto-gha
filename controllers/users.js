@@ -19,7 +19,7 @@ const getUser = (req, res) => {
     .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемый пользователь не найден ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Запрашиваемый пользователь не найден ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
