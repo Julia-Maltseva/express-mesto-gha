@@ -47,7 +47,13 @@ const updateProfile = (req, res) => {
     { name, about },
     { new: true },
   )
-    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
+    .then((user) => {
+      if (!user) {
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
+      } else {
+        res.status(ErrorCode.STATUS_OK).send({ name: user.name, about: user.about });
+      }
+    })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
@@ -64,7 +70,13 @@ const updateAvatar = (req, res) => {
     { avatar },
     { new: true },
   )
-    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
+    .then((user) => {
+      if (!user) {
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
+      } else {
+        res.status(ErrorCode.STATUS_OK).send({ avatar: user.avatar });
+      }
+    })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
