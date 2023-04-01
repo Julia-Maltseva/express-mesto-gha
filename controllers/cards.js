@@ -11,6 +11,7 @@ const getCards = (req, res) => {
 
 const createCard = (req, res) => {
   const owner = req.user._id;
+  console.log(req.user._id);
   const { name, link } = req.body;
   return Card.create({ name, link, owner })
     .then((card) => res.status(ErrorCode.STATUS_OK).send(card))
@@ -24,7 +25,7 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findById(req.params.id)
+  Card.findById(req.params.cardId)
     .then((card) => {
       if (card !== null) {
         res.status(ErrorCode.STATUS_OK).send(card);
