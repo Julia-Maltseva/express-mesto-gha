@@ -34,13 +34,7 @@ const getUser = (req, res) => {
 
 const getUsers = (req, res) => {
   User.find({})
-    .then((users) => {
-      if (!users) {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователей' });
-      } else {
-        res.status(ErrorCode.STATUS_OK).send(users);
-      }
-    })
+    .then((users) => res.status(ErrorCode.STATUS_OK).send(users))
     .catch((error) => {
       res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
