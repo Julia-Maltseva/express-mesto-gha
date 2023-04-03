@@ -24,19 +24,20 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findById(req.params.cardId)
+  const cardId = req.params;
+  Card.findById(cardId)
     .then((card) => {
-      if (card !== null) {
+      if (card === null) {
         res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((error) => {
-      if (error.name === 'DeleteError') {
-        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
+    .catch((card) => {
+      if (card !== cardId) {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
       }
     });
 };
