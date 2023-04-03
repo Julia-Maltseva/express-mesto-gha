@@ -49,15 +49,15 @@ const updateProfile = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      if (!user) {
-        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
-      } else {
+      if (user) {
         res.status(ErrorCode.STATUS_OK).send({ name: user.name, about: user.about });
+      } else {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       }
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемый пользователь не найден ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
@@ -72,15 +72,15 @@ const updateAvatar = (req, res) => {
     { new: true, runValidators: true },
   )
     .then((user) => {
-      if (!user) {
-        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
-      } else {
+      if (user) {
         res.status(ErrorCode.STATUS_OK).send({ avatar: user.avatar });
+      } else {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       }
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемый пользователь не найден ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
