@@ -15,7 +15,8 @@ const createUser = (req, res) => {
 };
 
 const getUser = (req, res) => {
-  User.findById(req.params.id)
+  const { id } = req.params;
+  User.findById(id)
     .then((user) => {
       if (user) {
         res.status(ErrorCode.STATUS_OK).send(user);

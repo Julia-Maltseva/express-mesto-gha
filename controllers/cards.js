@@ -10,7 +10,8 @@ const getCards = (req, res) => {
 };
 
 const createCard = (req, res) => {
-  const { name, link, owner } = req.body;
+  const { name, link } = req.body;
+  const owner = req.user._id;
   return Card.create({ name, link, owner })
     .then((card) => res.status(ErrorCode.STATUS_OK).send({ data: card }))
     .catch((error) => {
