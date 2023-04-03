@@ -10,8 +10,7 @@ const getCards = (req, res) => {
 };
 
 const createCard = (req, res) => {
-  const owner = req.user._id;
-  const { name, link } = req.body;
+  const { name, link, owner } = req.body;
   return Card.create({ name, link, owner })
     .then((card) => res.status(ErrorCode.STATUS_OK).send({ data: card }))
     .catch((error) => {
@@ -29,7 +28,7 @@ const deleteCard = (req, res) => {
       if (card !== null) {
         res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       }
     })
     .catch((error) => {

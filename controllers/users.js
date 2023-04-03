@@ -17,7 +17,7 @@ const createUser = (req, res) => {
 const getUser = (req, res) => {
   User.findById(req.params.id)
     .then((user) => {
-      if (user[req.params.id]) {
+      if (user) {
         res.status(ErrorCode.STATUS_OK).send(user);
       } else {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
