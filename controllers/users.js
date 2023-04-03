@@ -24,11 +24,11 @@ const getUser = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       }
     })
-    .catch((error) => {
-      if (error.name === 'ValidationError') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
+    .catch((user) => {
+      if (user._id !== id) {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
       }
     });
 };
