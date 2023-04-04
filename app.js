@@ -15,6 +15,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 
 const app = express();
 
+app.use((req, res, next) => {
+  req.user = {
+    _id: '64231a2b0289da196b06388a',
+  };
+
+  next();
+});
+
 app.use(express.static(path.join((__dirname, 'public'))));
 app.use(bodyParser.json());
 
@@ -23,12 +31,4 @@ app.use('/', cardsRouter);
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
-});
-
-app.use((req, res, next) => {
-  req.user = {
-    _id: '64231a2b0289da196b06388a',
-  };
-
-  next();
 });

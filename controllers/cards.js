@@ -24,11 +24,11 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  const cardId = req.params;
+  const { cardId } = req.params;
   Card.findById(cardId)
     .then((card) => {
       if (card === null) {
-        res.status(ErrorCode.STATUS_OK).send({});
+        res.status(ErrorCode.STATUS_OK).send({ card });
       } else {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
