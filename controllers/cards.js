@@ -33,8 +33,8 @@ const deleteCard = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((id) => {
-      if (id !== cardId) {
+    .catch((card) => {
+      if (card !== cardId) {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
@@ -52,12 +52,12 @@ const addLike = (req, res) => {
       if (card !== null) {
         res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
     .catch((error) => {
       if (error.name === 'LikeError') {
-        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
@@ -74,12 +74,12 @@ const deleteLike = (req, res) => {
       if (card !== null) {
         res.status(ErrorCode.STATUS_OK).send(card);
       } else {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
     .catch((error) => {
       if (error.name === 'LikeError') {
-        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
