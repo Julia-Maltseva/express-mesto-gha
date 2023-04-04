@@ -28,13 +28,13 @@ const deleteCard = (req, res) => {
   Card.findById(cardId)
     .then((card) => {
       if (card === null) {
-        res.status(ErrorCode.STATUS_OK).send(card);
+        res.status(ErrorCode.STATUS_OK).send({});
       } else {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((card) => {
-      if (card !== cardId) {
+    .catch((id) => {
+      if (id !== cardId) {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
