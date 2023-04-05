@@ -27,14 +27,12 @@ const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.findById(cardId)
     .then((card) => {
-      if (card === null) {
-        res.status(ErrorCode.STATUS_OK).send({ card });
-      } else {
-        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
+      if (!card) {
+        res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
       }
     })
     .catch((card) => {
-      if (card !== cardId) {
+      if (card) {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
@@ -58,9 +56,9 @@ const addLike = (req, res) => {
     .catch((error) => {
       if (error.name === 'LikeError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
-      } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        return;
       }
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
