@@ -30,12 +30,12 @@ const deleteCard = (req, res) => {
       if (!card) {
         res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
       } else {
-        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       }
     })
     .catch((error) => {
       if (error.name === 'DeleteCard') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
+        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
       }
@@ -77,12 +77,12 @@ const deleteLike = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((error) => {
-      if (error.name === 'LikeError') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
-      } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+    .catch((cardId) => {
+      if (cardId !== req.user._id) {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        return;
       }
+      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
     });
 };
 
