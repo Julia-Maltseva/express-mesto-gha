@@ -58,9 +58,9 @@ const updateProfile = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
-      } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        return;
       }
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
@@ -81,9 +81,9 @@ const updateAvatar = (req, res) => {
     .catch((error) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
-      } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        return;
       }
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
