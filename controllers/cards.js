@@ -25,9 +25,9 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
-  Card.findById(cardId)
+  Card.findByIdAndRemove(cardId)
     .then((card) => {
-      if (!card) {
+      if (card === null) {
         res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
       } else {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
