@@ -33,12 +33,12 @@ const deleteCard = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((error) => {
-      if (error.name === 'DeleteCard') {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
+    .catch((owner) => {
+      if (req.user._id !== owner.toString()) {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
     });
 };
 
