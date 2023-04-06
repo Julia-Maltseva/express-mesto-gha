@@ -30,15 +30,15 @@ const deleteCard = (req, res) => {
       if (card !== null) {
         res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
       } else {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
     .catch((error) => {
       if (error.name === 'DeleteCard') {
-        res.status(ErrorCode.NOT_FOUND).send({ message: `Запрашиваемая карточка не найдена ${error}` });
-      } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
+        return;
       }
+      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
     });
 };
 
