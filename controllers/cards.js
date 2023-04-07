@@ -4,8 +4,8 @@ const ErrorCode = require('../errors');
 const getCards = (req, res) => {
   Card.find({})
     .then((cards) => res.status(ErrorCode.STATUS_OK).send(cards))
-    .catch((error) => {
-      res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+    .catch(() => {
+      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
     });
 };
 
@@ -18,7 +18,7 @@ const createCard = (req, res) => {
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные карточки ${error}` });
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: `Ошибка сервера ${error}` });
+        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
       }
     });
 };

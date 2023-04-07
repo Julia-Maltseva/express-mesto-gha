@@ -8,14 +8,14 @@ const {
   updateAvatar,
 } = require('../controllers/users');
 
-router.get('/users', getUsers);
+router.get('/', getUsers);
 
-router.post('/users', createUser);
+router.post('/', createUser);
 
-router.patch('/users/me', updateProfile);
+router.patch('/me', updateProfile);
 
-router.patch('/users/me/avatar', updateAvatar);
+router.patch('/me/avatar', updateAvatar);
 
-router.get('/users/:id', getUser);
+router.get('/:id', getUser);
 
 module.exports = router;
