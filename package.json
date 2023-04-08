@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "body-parse": "^0.1.0",
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
-    "web-vitals": "^2.1.4",
     "mongoose": "^7.0.3"
   },
   "scripts": {
@@ -16,7 +14,6 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
       "react-app/jest"
     ]
   },
