@@ -12,11 +12,6 @@
     "dev": "nodemon app.js",
     "lint": "npx eslint ."
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
