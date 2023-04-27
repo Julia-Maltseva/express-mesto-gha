@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { celebrate, Joi, errors } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 const ErrorCode = require('./errors');
@@ -18,8 +19,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 
 const app = express();
 
-app.post('/signin', login);
-app.post('/signup', createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  }),
+}), login);
+
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().min(2).max(30),
+  }),
+}), createUser);
 
 app.use(express.static(path.join((__dirname, 'public'))));
 app.use(bodyParser.json());
@@ -29,6 +44,7 @@ app.use('/cards', cardsRouter);
 app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Страница не найдена' }));
 
 app.use(auth);
+app.use(errors());
 
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
