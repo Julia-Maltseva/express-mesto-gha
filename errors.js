@@ -4,6 +4,7 @@ const ErrorCode = {
   NOT_FOUND: 404,
   SERVER_ERROR: 500,
   UNAUTHORIZED: 401,
+  CONFLICT: 409,
 };
 
 module.exports = ErrorCode;

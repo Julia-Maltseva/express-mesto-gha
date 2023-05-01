@@ -20,8 +20,11 @@ const createUser = (req, res) => {
     email,
     password: hash,
   })
-    .then((user) => res.status(ErrorCode.STATUS_OK).send(user))
+    .then((user) => res.status(ErrorCode.STATUS_OK).send({ data: user }))
     .catch((error) => {
+      if (error.code === 11000) {
+        res.status(ErrorCode.CONFLICT).send({ message: 'Пользователь с такими данными уже существует' });
+      }
       if (error.name === 'ValidationError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: `Переданы некорректные данные пользователя ${error}` });
       } else {
