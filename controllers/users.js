@@ -13,14 +13,14 @@ const createUser = async (req, res) => {
     email,
     password,
   } = req.body;
-  const hash = await bcrypt.hash(password, 10);
-  return User.create({
-    name,
-    about,
-    avatar,
-    email,
-    password: hash,
-  })
+  await bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
     .then((user) => res.status(ErrorCode.STATUS_OK).send({ data: user }))
     .catch((error) => {
       if (error.code === 11000) {
