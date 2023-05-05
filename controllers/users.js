@@ -13,15 +13,22 @@ const createUser = async (req, res) => {
     email,
     password,
   } = req.body;
-  await bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
+  const hash = await bcrypt.hash(password, 10);
+  return User.create({
+    name,
+    about,
+    avatar,
+    email,
+    password: hash,
+  })
+    .then((user) => res.status(ErrorCode.STATUS_OK).send({
+      data: {
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+      },
     }))
-    .then((user) => res.status(ErrorCode.STATUS_OK).send({ data: user }))
     .catch((error) => {
       if (error.code === 11000) {
         res.status(ErrorCode.CONFLICT).send({ message: 'Пользователь с такими данными уже существует' });
