@@ -5,7 +5,7 @@ const ErrorCode = require('../errors');
 
 const { JWT_SECRET } = process.env;
 
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   const {
     name,
     about,
@@ -13,7 +13,7 @@ const createUser = (req, res) => {
     email,
     password,
   } = req.body;
-  const hash = bcrypt.hash(password, 10);
+  const hash = await bcrypt.hash(password, 10);
   return User.create({
     name,
     about,
