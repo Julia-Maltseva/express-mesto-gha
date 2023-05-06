@@ -40,6 +40,7 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
+app.use(auth);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Страница не найдена' }));
@@ -47,7 +48,6 @@ app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Ст
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
-app.use(auth);
 app.use(errors());
 
 app.listen(PORT, () => {
