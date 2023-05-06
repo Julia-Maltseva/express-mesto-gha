@@ -3,8 +3,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ErrorCode = require('../errors');
 
-// const { JWT_SECRET } = process.env;
-
 const createUser = async (req, res) => {
   const {
     name,
@@ -118,7 +116,7 @@ const login = (req, res) => {
   const { email, password } = req.body;
   return User
     .findOne({ email }).select('+password')
-    .orFail(() => res.status(ErrorCode.NOT_FOUND).send({ message: 'Пользователь не найден' }))
+    .orFail(() => res.status(ErrorCode.UNAUTHORIZED).send({ message: 'Неправильный email или пароль' }))
     .then((user) => bcrypt.compare(password, user.password).then((matched) => {
       if (matched) {
         return user;
@@ -142,7 +140,7 @@ const getUser = (req, res) => {
   User.findById(req.user._id)
     .then((user) => {
       if (user) {
-        res.status(ErrorCode.STATUS_OK).send(user);
+        res.status(ErrorCode.STATUS_OK).send({ data: user });
       } else {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       }
