@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const ErrorCode = require('../errors');
 
-const { JWT_SECRET } = process.env;
+// const { JWT_SECRET } = process.env;
 
 const createUser = async (req, res) => {
   const {
@@ -116,7 +116,7 @@ const updateAvatar = (req, res) => {
 
 const login = (req, res) => {
   const { email, password } = req.body;
-  User
+  return User
     .findOne({ email }).select('+password')
     .orFail(() => res.status(ErrorCode.NOT_FOUND).send({ message: 'Пользователь не найден' }))
     .then((user) => bcrypt.compare(password, user.password).then((matched) => {
@@ -126,7 +126,7 @@ const login = (req, res) => {
       return res.status(ErrorCode.NOT_FOUND).send({ message: 'Пользователь не найден' });
     }))
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 * 24 * 7 }).send({ user, token });
     })
     .catch((error) => {
