@@ -27,15 +27,17 @@ const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.findByIdAndRemove(cardId)
     .then((card) => {
-      if (card !== null) {
-        res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
-      } else {
+      if (card === null) {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
+      } if (req.user._id !== card.owner.toString()) {
+        res.status(ErrorCode.FORBIDDEN).send({ message: 'Невозможно удалить карточку другого пользователя' });
+      } else {
+        res.status(ErrorCode.STATUS_OK).send({ message: 'Карточка удалена' });
       }
     })
-    .catch((owner) => {
-      if (req.user._id !== owner.toString()) {
-        res.status(ErrorCode.FORBIDDEN).send({ message: 'Невозможно удалить карточку другого пользователя' });
+    .catch((error) => {
+      if (error.name === 'ValidationError') {
+        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
         return;
       }
       res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
