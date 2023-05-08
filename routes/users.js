@@ -10,6 +10,7 @@ const {
 } = require('../controllers/users');
 
 router.get('/', getUsers);
+router.get('/me', getUser);
 
 router.patch('/me', celebrate({
   body: Joi.object().keys({
@@ -25,11 +26,9 @@ router.patch('/me/avatar', celebrate({
 }), updateAvatar);
 
 router.get('/:id', celebrate({
-  body: Joi.object().keys({
+  params: Joi.object().keys({
     id: Joi.string().required().length(24).hex(),
   }),
 }), getUserId);
-
-router.get('/me', getUser);
 
 module.exports = router;
