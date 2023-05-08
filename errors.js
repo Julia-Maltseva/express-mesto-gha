@@ -5,6 +5,7 @@ const ErrorCode = {
   SERVER_ERROR: 500,
   UNAUTHORIZED: 401,
   CONFLICT: 409,
+  FORBIDDEN: 403,
 };
 
 module.exports = ErrorCode;

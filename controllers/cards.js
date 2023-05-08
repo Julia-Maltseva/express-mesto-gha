@@ -35,7 +35,7 @@ const deleteCard = (req, res) => {
     })
     .catch((owner) => {
       if (req.user._id !== owner.toString()) {
-        res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
+        res.status(ErrorCode.FORBIDDEN).send({ message: 'Невозможно удалить карточку другого пользователя' });
         return;
       }
       res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });

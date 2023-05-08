@@ -41,12 +41,12 @@ app.post('/signup', celebrate({
 }), createUser);
 
 app.use(auth);
+app.use('/users', require('./routes/users'));
+app.use('/cards', require('./routes/cards'));
+
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Страница не найдена' }));
-
-app.use('/users', require('./routes/users'));
-app.use('/cards', require('./routes/cards'));
 
 app.use(errors());
 
