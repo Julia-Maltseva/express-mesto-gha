@@ -146,7 +146,7 @@ const getUser = (req, res) => {
       }
     })
     .catch((error) => {
-      if (error.name === 'Validation Error') {
+      if (error.name === 'CastError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });

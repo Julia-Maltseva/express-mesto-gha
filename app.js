@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -9,6 +8,7 @@ const cardsRouter = require('./routes/cards');
 const ErrorCode = require('./errors');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const urlValidate = require('./utils/urlValidate');
 
 const { PORT = 3000 } = process.env;
 
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
 });
 
 const app = express();
-app.use(express.static(path.join((__dirname, 'public'))));
+
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -36,7 +36,7 @@ app.post('/signup', celebrate({
     password: Joi.string().required(),
     name: Joi.string().min(2).max(30),
     about: Joi.string().min(2).max(30),
-    avatar: Joi.string().pattern(/https?:\/\/(www\.)?[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]/),
+    avatar: Joi.string().pattern(urlValidate),
   }),
 }), createUser);
 
