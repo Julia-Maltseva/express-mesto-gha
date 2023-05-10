@@ -50,6 +50,18 @@ app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Ст
 
 app.use(errors());
 
+app.use((err, req, res, next) => {
+  const { statusCode = ErrorCode.SERVER_ERROR, message } = err;
+  res
+    .status(statusCode)
+    .send({
+      message: statusCode === ErrorCode.SERVER_ERROR
+        ? 'На сервере произошла ошибка'
+        : message,
+    });
+  next();
+});
+
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
 });

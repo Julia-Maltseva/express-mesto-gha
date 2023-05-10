@@ -57,8 +57,8 @@ const addLike = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемая карточка не найдена' });
       }
     })
-    .catch((cardId) => {
-      if (cardId !== req.user._id) {
+    .catch((error) => {
+      if (error.name === 'CastError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
         return;
       }

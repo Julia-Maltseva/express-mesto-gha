@@ -49,8 +49,8 @@ const getUserId = (req, res) => {
         res.status(ErrorCode.NOT_FOUND).send({ message: 'Запрашиваемый пользователь не найден' });
       }
     })
-    .catch((user) => {
-      if (user._id !== id) {
+    .catch((error) => {
+      if (error.name === 'CastError') {
         res.status(ErrorCode.BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       } else {
         res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
@@ -121,7 +121,7 @@ const login = (req, res) => {
       if (matched) {
         return user;
       }
-      return res.status(ErrorCode.NOT_FOUND).send({ message: 'Пользователь не найден' });
+      return res.status(ErrorCode.UNAUTHORIZED).send({ message: 'Неправильный email или пароль' });
     }))
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
