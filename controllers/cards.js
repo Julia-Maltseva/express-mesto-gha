@@ -1,5 +1,5 @@
 const Card = require('../models/card');
-const ErrorCode = require('../errors');
+const ErrorCode = require('../Errors');
 
 const getCards = (req, res) => {
   Card.find({})

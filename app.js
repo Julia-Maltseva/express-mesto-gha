@@ -5,10 +5,11 @@ const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
-const ErrorCode = require('./errors');
+const ErrorCode = require('./Errors');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const urlValidate = require('./utils/urlValidate');
+const NotFound = require('./errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -46,7 +47,9 @@ app.use('/cards', require('./routes/cards'));
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
-app.use('*', (req, res) => res.status(ErrorCode.NOT_FOUND).send({ message: 'Страница не найдена' }));
+app.use('*', (req, res, next) => {
+  next(new NotFound('Страница не найдена'));
+});
 
 app.use(errors());
 
