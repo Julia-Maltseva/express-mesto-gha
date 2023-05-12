@@ -4,11 +4,11 @@ const BadRequest = require('../errors/BadRequestError');
 const NotFound = require('../errors/NotFoundError');
 const Forbidden = require('../errors/ForbiddenError');
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => res.status(ErrorCode.STATUS_OK).send(cards))
     .catch(() => {
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next();
     });
 };
 
@@ -21,7 +21,7 @@ const createCard = (req, res, next) => {
       if (error.name === 'ValidationError') {
         next(new BadRequest(`Переданы некорректные данные карточки ${error}`));
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        next(error);
       }
     });
 };
@@ -43,7 +43,7 @@ const deleteCard = (req, res, next) => {
         next(new BadRequest('Переданы некорректные данные карточки'));
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next(error);
     });
 };
 
@@ -65,7 +65,7 @@ const addLike = (req, res, next) => {
         next(new BadRequest('Переданы некорректные данные карточки'));
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next(error);
     });
 };
 
@@ -87,7 +87,7 @@ const deleteLike = (req, res, next) => {
         next(new BadRequest('Переданы некорректные данные карточки'));
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next();
     });
 };
 

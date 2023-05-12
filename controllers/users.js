@@ -38,7 +38,7 @@ const createUser = async (req, res, next) => {
       if (error.name === 'ValidationError') {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        next(error);
       }
     });
 };
@@ -57,16 +57,16 @@ const getUserId = (req, res, next) => {
       if (error.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные пользователя'));
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        next(error);
       }
     });
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => res.status(ErrorCode.STATUS_OK).send(users))
     .catch(() => {
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next();
     });
 };
 
@@ -89,7 +89,7 @@ const updateProfile = (req, res, next) => {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next(error);
     });
 };
 
@@ -112,7 +112,7 @@ const updateAvatar = (req, res, next) => {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
         return;
       }
-      res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+      next(error);
     });
 };
 
@@ -135,7 +135,7 @@ const login = (req, res, next) => {
       if (error.name === 'ValidationError') {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
       } else {
-        res.status(ErrorCode.SERVER_ERROR).send({ message: 'Ошибка сервера' });
+        next(error);
       }
     });
 };
