@@ -121,19 +121,16 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User
     .findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        next(new Unauthorized('Неправильный email или пароль'));
+    .orFail(() => next(new Unauthorized('Неправильный email или пароль')))
+    .then((user) => bcrypt.compare(password, user.password).then((matched) => {
+      if (matched) {
+        return user;
       }
-      bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            return next(new Unauthorized('Неправильный email или пароль'));
-          }
-          const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
-          res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 * 24 * 7 });
-          return res.send({ token });
-        });
+      return next(new Unauthorized('Неправильный email или пароль'));
+    }))
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 * 24 * 7 });
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
