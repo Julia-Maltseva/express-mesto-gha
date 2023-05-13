@@ -105,7 +105,7 @@ const updateAvatar = (req, res, next) => {
       if (user) {
         res.status(ErrorCode.STATUS_OK).send({ avatar: user.avatar });
       } else {
-        next(new BadRequest('Переданы некорректные данные пользователя'));
+        next(new NotFound('Переданы некорректные данные пользователя'));
       }
     })
     .catch((error) => {
