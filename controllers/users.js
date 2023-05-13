@@ -34,12 +34,13 @@ const createUser = async (req, res, next) => {
     .catch((error) => {
       if (error.code === 11000) {
         next(new Conflict('Пользователь с такими данными уже существует'));
+        return;
       }
       if (error.name === 'ValidationError') {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
-      } else {
-        next(error);
+        return;
       }
+      next(error);
     });
 };
 
@@ -56,9 +57,9 @@ const getUserId = (req, res, next) => {
     .catch((error) => {
       if (error.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные пользователя'));
-      } else {
-        next(error);
+        return;
       }
+      next(error);
     });
 };
 
@@ -129,14 +130,14 @@ const login = (req, res, next) => {
     }))
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
-      res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 * 24 * 7 }).send({ user, token });
+      res.cookie('jwt', token, { httpOnly: true, maxAge: 3600000 * 24 * 7 }).send({ token });
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
         next(new BadRequest(`Переданы некорректные данные пользователя ${error}`));
-      } else {
-        next(error);
+        return;
       }
+      next(error);
     });
 };
 
