@@ -82,7 +82,7 @@ const updateProfile = (req, res, next) => {
       if (user) {
         res.status(ErrorCode.STATUS_OK).send({ name: user.name, about: user.about });
       } else {
-        next(new BadRequest('Переданы некорректные данные пользователя'));
+        next(new NotFound('Запрашиваемый пользователь не найден'));
       }
     })
     .catch((error) => {
@@ -105,7 +105,7 @@ const updateAvatar = (req, res, next) => {
       if (user) {
         res.status(ErrorCode.STATUS_OK).send({ avatar: user.avatar });
       } else {
-        next(new NotFound('Переданы некорректные данные пользователя'));
+        next(new NotFound('Запрашиваемый пользователь не найден'));
       }
     })
     .catch((error) => {
